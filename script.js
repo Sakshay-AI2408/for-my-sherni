@@ -1,10 +1,12 @@
-$(document).ready(function () {
+const envelope = document.getElementById("envelope");
+const btnOpen = document.getElementById("open");
+const btnReset = document.getElementById("reset");
 
-  const envelope = $("#envelope");
-  const btnOpen = $("#open");
-  const btnReset = $("#reset");
+const typingText = document.getElementById("typing-text");
 
-  const message = `
+const music = document.getElementById("bg-music");
+
+const message = `
 I know things have not been easy lately,
 and I know I made mistakes that hurt you.
 
@@ -13,7 +15,7 @@ I am truly sorry for everything that caused you pain.
 But more than anything,
 I want you to remember who you are.
 
-You are my Sherni —
+You are my Sherni -
 strong, fearless, beautiful,
 and capable of surviving every difficult phase.
 
@@ -26,50 +28,57 @@ And no matter how imperfect I am,
 one thing will always remain true...
 `;
 
-  let index = 0;
-  let typingStarted = false;
+let index = 0;
+let typingStarted = false;
 
-  envelope.click(function () {
-    openLetter();
+envelope.addEventListener("click", openLetter);
+btnOpen.addEventListener("click", openLetter);
+btnReset.addEventListener("click", closeLetter);
+
+function openLetter() {
+
+  envelope.classList.add("open");
+  envelope.classList.remove("close");
+
+  // Music play
+  music.volume = 0.5;
+
+  music.play().catch(() => {
+    console.log("Autoplay blocked until interaction.");
   });
 
-  btnOpen.click(function () {
-    openLetter();
-  });
-
-  btnReset.click(function () {
-    closeLetter();
-  });
-
-  function openLetter() {
-
-    envelope.addClass("open").removeClass("close");
-
-    if (!typingStarted) {
-      typingStarted = true;
-      typeText();
-    }
+  // Start typing
+  if (!typingStarted) {
+    typingStarted = true;
+    typeText();
   }
+}
 
-  function closeLetter() {
+function closeLetter() {
 
-    envelope.addClass("close").removeClass("open");
+  envelope.classList.add("close");
+  envelope.classList.remove("open");
 
-    $("#typing-text").html("");
-    index = 0;
-    typingStarted = false;
+  typingText.innerHTML = "";
+
+  index = 0;
+  typingStarted = false;
+
+  music.pause();
+  music.currentTime = 0;
+}
+
+function typeText() {
+
+  if (index < message.length) {
+
+    typingText.innerHTML += message.charAt(index);
+
+    // AUTO SCROLL FIX
+    typingText.scrollTop = typingText.scrollHeight;
+
+    index++;
+
+    setTimeout(typeText, 40);
   }
-
-  function typeText() {
-
-    if (index < message.length) {
-
-      $("#typing-text").append(message.charAt(index));
-
-      index++;
-
-      setTimeout(typeText, 45);
-    }
-  }
-
-});
+}
