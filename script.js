@@ -1,10 +1,10 @@
 const envelope = document.getElementById("envelope");
-const btnOpen = document.getElementById("open");
-const btnReset = document.getElementById("reset");
+const openBtn = document.getElementById("open");
+const closeBtn = document.getElementById("close");
 
 const typingText = document.getElementById("typing-text");
 
-const music = document.getElementById("bg-music");
+const music = document.getElementById("bgMusic");
 
 const message = `
 I know things have not been easy lately,
@@ -15,46 +15,40 @@ I am truly sorry for everything that caused you pain.
 But more than anything,
 I want you to remember who you are.
 
-You are my Sherni -
+You are my Sherni —
 strong, fearless, beautiful,
 and capable of surviving every difficult phase.
 
-Even when life becomes heavy,
+Even when life feels heavy,
 please don't stop believing in yourself.
 
 I believe in you endlessly.
 
 And no matter how imperfect I am,
 one thing will always remain true...
+
+I love you, Mrinali ❤️
+Don't Give Up on me....
 `;
 
 let index = 0;
-let typingStarted = false;
+let started = false;
 
-envelope.addEventListener("click", openLetter);
-btnOpen.addEventListener("click", openLetter);
-btnReset.addEventListener("click", closeLetter);
-
-function openLetter() {
+function startLetter(){
 
   envelope.classList.add("open");
   envelope.classList.remove("close");
 
-  // Music play
-  music.volume = 0.5;
+  // MOBILE MUSIC FIX
+  music.play().catch(() => {});
 
-  music.play().catch(() => {
-    console.log("Autoplay blocked until interaction.");
-  });
-
-  // Start typing
-  if (!typingStarted) {
-    typingStarted = true;
+  if(!started){
+    started = true;
     typeText();
   }
 }
 
-function closeLetter() {
+function closeLetter(){
 
   envelope.classList.add("close");
   envelope.classList.remove("open");
@@ -62,23 +56,27 @@ function closeLetter() {
   typingText.innerHTML = "";
 
   index = 0;
-  typingStarted = false;
+  started = false;
 
   music.pause();
   music.currentTime = 0;
 }
 
-function typeText() {
+function typeText(){
 
-  if (index < message.length) {
+  if(index < message.length){
 
     typingText.innerHTML += message.charAt(index);
 
-    // AUTO SCROLL FIX
+    // AUTO SCROLL
     typingText.scrollTop = typingText.scrollHeight;
 
     index++;
 
-    setTimeout(typeText, 40);
+    setTimeout(typeText,40);
   }
 }
+
+openBtn.addEventListener("click",startLetter);
+closeBtn.addEventListener("click",closeLetter);
+envelope.addEventListener("click",startLetter);
