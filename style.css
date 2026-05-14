@@ -79,7 +79,8 @@ body{
 
 /* POCKET
    ------
-   Explicit z-index:1 so it always sits beneath the letter (z-index ≥ 2).
+   z-index:1 keeps it ABOVE the letter (z:0) in closed state,
+   so the pocket triangles fully hide the letter inside the envelope.
 */
 
 .pocket{
@@ -87,10 +88,14 @@ body{
   border-right:210px solid #ff8fab;
   border-bottom:150px solid #ff5d8f;
   border-top:150px solid transparent;
-  z-index:1;               /* ← new */
+  z-index:1;
 }
 
-/* LETTER */
+/* LETTER
+   ------
+   z-index:0 in closed state → hidden behind pocket (z:1) and flap (z:5).
+   Jumps to z-index:20 only when .open is applied (see OPEN STATE below).
+*/
 
 .letter{
   position:absolute;
@@ -102,8 +107,8 @@ body{
   transform:translateX(-50%);
   border-radius:10px;
   overflow:hidden;
-  z-index:2;
-  transition:transform 0.6s ease, z-index 0s;
+  z-index:0;               /* ← was 2; now hidden inside envelope when closed */
+  transition:transform 0.6s ease;
 }
 
 /* MESSAGE */
