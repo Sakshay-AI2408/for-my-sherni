@@ -107,8 +107,9 @@ body{
   transform:translateX(-50%);
   border-radius:10px;
   overflow:hidden;
-  z-index:0;               /* ← was 2; now hidden inside envelope when closed */
-  transition:transform 0.6s ease;
+  z-index:0;
+  opacity:0;                             /* ← invisible when envelope is closed */
+  transition:transform 0.6s ease, opacity 0.4s ease;
 }
 
 /* MESSAGE */
@@ -183,8 +184,9 @@ body{
 }
 
 .open .letter{
-  transform:translateX(-50%) translateY(-180px);  /* ← was -160px, extra clearance */
-  z-index:20;              /* ← was 3; now well above everything */
+  transform:translateX(-50%) translateY(-180px);
+  z-index:20;
+  opacity:1;               /* ← letter becomes visible as it rises out */
 }
 
 .close .letter{
