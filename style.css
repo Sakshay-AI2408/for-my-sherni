@@ -1,0 +1,338 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:linear-gradient(135deg,#ffe6eb,#f7d9ff);
+  font-family:'Poppins',sans-serif;
+  overflow-x:hidden;
+  min-height:100vh;
+  position:relative;
+  padding:20px;
+}
+
+/* TITLE */
+
+.main-title{
+  text-align:center;
+  font-family:'Dancing Script',cursive;
+  color:#c2185b;
+  font-size:2.7rem;
+  margin-top:20px;
+  z-index:10;
+  position:relative;
+}
+
+/* WRAPPER
+   -------
+   Was 60px — letter rises 160px so it was crashing into the title.
+   Now 200px gives the risen letter clear air above the envelope.
+*/
+
+.envlope-wrapper{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-top:200px;        /* ← was 60px */
+  margin-bottom:50px;
+}
+
+/* ENVELOPE
+   ---------
+   perspective is required so rotateX on the flap actually folds
+   it away in 3D instead of just flipping flat on screen.
+*/
+
+#envelope{
+  position:relative;
+  width:420px;
+  height:300px;
+  background:#ff5d8f;
+  border-bottom-left-radius:10px;
+  border-bottom-right-radius:10px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  perspective:1200px;      /* ← new: enables 3D fold on flap */
+}
+
+/* FLAP */
+
+.front{
+  position:absolute;
+  width:0;
+  height:0;
+}
+
+.flap{
+  border-left:210px solid transparent;
+  border-right:210px solid transparent;
+  border-bottom:150px solid transparent;
+  border-top:160px solid #d6336c;
+
+  transform-origin:top;
+  transform-style:preserve-3d;   /* ← new */
+  backface-visibility:hidden;    /* ← new: hides flap back-face after fold */
+  z-index:5;
+  transition:transform 0.6s ease, z-index 0s 0.3s;
+}
+
+/* POCKET
+   ------
+   Explicit z-index:1 so it always sits beneath the letter (z-index ≥ 2).
+*/
+
+.pocket{
+  border-left:210px solid #ff8fab;
+  border-right:210px solid #ff8fab;
+  border-bottom:150px solid #ff5d8f;
+  border-top:150px solid transparent;
+  z-index:1;               /* ← new */
+}
+
+/* LETTER */
+
+.letter{
+  position:absolute;
+  background:white;
+  width:92%;
+  height:95%;
+  left:50%;
+  top:2%;
+  transform:translateX(-50%);
+  border-radius:10px;
+  overflow:hidden;
+  z-index:2;
+  transition:transform 0.6s ease, z-index 0s;
+}
+
+/* MESSAGE */
+
+.message{
+  padding:18px;
+  text-align:center;
+  height:100%;
+  display:flex;
+  flex-direction:column;
+}
+
+.message h2{
+  font-family:'Dancing Script',cursive;
+  color:#d6336c;
+  font-size:2rem;
+  margin-bottom:10px;
+  flex-shrink:0;
+}
+
+/* TYPING */
+
+#typing-text{
+  flex:1;                  /* ← fills remaining height naturally */
+  overflow-y:auto;
+  font-size:15px;
+  line-height:1.8;
+  color:#444;
+  white-space:pre-line;
+  scroll-behavior:smooth;
+  padding-right:5px;
+  word-break:break-word;   /* ← prevents long words bleeding out */
+}
+
+#typing-text::-webkit-scrollbar{
+  width:4px;
+}
+
+#typing-text::-webkit-scrollbar-thumb{
+  background:#ff8fab;
+  border-radius:10px;
+}
+
+/* TEXT */
+
+.love-line{
+  color:#d6336c;
+  font-size:18px;
+  margin-top:12px;
+  font-weight:600;
+  flex-shrink:0;
+}
+
+.ending{
+  margin-top:10px;
+  font-style:italic;
+  color:#666;
+  flex-shrink:0;
+}
+
+/* OPEN STATE
+   ----------
+   Flap: rotateX folds it backwards (needs perspective on parent).
+   Letter: rises OUT of envelope. z-index:20 ensures it clears
+   both the pocket (z:1) and the flap (z:1 when open).
+*/
+
+.open .flap{
+  transform:rotateX(180deg);
+  z-index:0;               /* ← was 1, now 0 so letter is safely above */
+  transition:transform 0.6s ease;
+}
+
+.open .letter{
+  transform:translateX(-50%) translateY(-180px);  /* ← was -160px, extra clearance */
+  z-index:20;              /* ← was 3; now well above everything */
+}
+
+.close .letter{
+  transform:translateX(-50%) translateY(0);
+}
+
+/* BUTTONS */
+
+.buttons{
+  text-align:center;
+  position:relative;
+  z-index:20;
+}
+
+button{
+  border:none;
+  background:#d6336c;
+  color:white;
+  padding:12px 22px;
+  border-radius:30px;
+  margin:10px;
+  font-size:15px;
+  cursor:pointer;           /* ← shows pointer on desktop too */
+  -webkit-tap-highlight-color:transparent; /* ← removes grey flash on Android tap */
+  touch-action:manipulation;              /* ← removes 300ms tap delay on Android */
+}
+
+button:active{
+  opacity:0.85;
+  transform:scale(0.97);
+}
+
+/* ROSES */
+
+.rose-container{
+  position:fixed;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:0;
+}
+
+.rose{
+  position:absolute;
+  top:-10%;
+  font-size:28px;
+  animation:fall linear infinite;
+}
+
+.rose:nth-child(1){left:10%;animation-duration:8s;animation-delay:0s;}
+.rose:nth-child(2){left:25%;animation-duration:10s;animation-delay:1s;}
+.rose:nth-child(3){left:40%;animation-duration:7s;animation-delay:2s;}
+.rose:nth-child(4){left:60%;animation-duration:11s;animation-delay:0.5s;}
+.rose:nth-child(5){left:75%;animation-duration:9s;animation-delay:1.5s;}
+.rose:nth-child(6){left:90%;animation-duration:12s;animation-delay:3s;}
+
+@keyframes fall{
+  from{
+    transform:translateY(-100px) rotate(0deg);
+    opacity:1;
+  }
+  to{
+    transform:translateY(120vh) rotate(360deg);
+    opacity:0.6;
+  }
+}
+
+/* ============================================================
+   MOBILE  (≤ 500px)
+   Key changes vs desktop:
+   - Envelope wrapper margin-top: 160px (letter rises 120px → 40px gap from title)
+   - Letter translateY: -120px (was -120px, kept; title now safe with bigger margin)
+   - typing-text uses flex:1 so it fills space cleanly without fixed px heights
+   - touch-action on envelope itself removes tap delay
+   ============================================================ */
+
+@media(max-width:500px){
+
+  body{
+    padding:10px;
+  }
+
+  .main-title{
+    font-size:1.9rem;
+    line-height:1.3;
+  }
+
+  /* More top margin so the -120px rise still clears the title */
+  .envlope-wrapper{
+    margin-top:160px;      /* ← was 60px in original */
+  }
+
+  #envelope{
+    width:320px;
+    height:240px;
+    perspective:900px;
+    touch-action:manipulation;   /* ← removes tap delay on envelope click */
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  .flap{
+    border-left:160px solid transparent;
+    border-right:160px solid transparent;
+    border-bottom:120px solid transparent;
+    border-top:120px solid #d6336c;
+  }
+
+  .pocket{
+    border-left:160px solid #ff8fab;
+    border-right:160px solid #ff8fab;
+    border-bottom:120px solid #ff5d8f;
+    border-top:120px solid transparent;
+  }
+
+  /* Letter rises 120px; with 160px margin above envelope there's
+     ample room before the title (~40px + title height). */
+  .open .letter{
+    transform:translateX(-50%) translateY(-130px);
+  }
+
+  .message{
+    padding:14px;
+  }
+
+  .message h2{
+    font-size:1.5rem;
+    margin-bottom:8px;
+  }
+
+  #typing-text{
+    font-size:13px;
+    line-height:1.65;
+  }
+
+  .love-line{
+    font-size:15px;
+    margin-top:8px;
+  }
+
+  .ending{
+    font-size:13px;
+    margin-top:6px;
+  }
+
+  button{
+    padding:11px 20px;
+    font-size:14px;
+  }
+
+  .rose{
+    font-size:20px;
+  }
+}

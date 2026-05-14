@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- MOBILE: user-scalable=no prevents accidental pinch zoom on Android -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <!-- Android Chrome: colours the status bar to match the page -->
+  <meta name="theme-color" content="#ffe6eb" />
+
+  <!-- Prevents iOS/Android from treating phone numbers as links -->
+  <meta name="format-detection" content="telephone=no" />
+
+  <title>For My Sherni ❤️</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- Falling Roses -->
+  <div class="rose-container">
+    <span class="rose">🌹</span>
+    <span class="rose">🌹</span>
+    <span class="rose">🌹</span>
+    <span class="rose">🌹</span>
+    <span class="rose">🌹</span>
+    <span class="rose">🌹</span>
+  </div>
+
+  <!-- Title -->
+  <h1 class="main-title">
+    For My Sherni, Mrinali ❤️
+  </h1>
+
+  <!-- Envelope -->
+  <div class="envlope-wrapper">
+
+    <div id="envelope" class="close">
+
+      <div class="front flap"></div>
+      <div class="front pocket"></div>
+
+      <!-- Letter -->
+      <div class="letter">
+        <div class="message">
+          <h2>My Dearest Mrinali ❤️</h2>
+          <div id="typing-text"></div>
+          <p class="love-line">I love you, Mrinali. Always ❤️</p>
+          <p class="ending">Please forgive me someday...</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Buttons -->
+  <div class="buttons">
+    <button id="open">Open Letter ❤️</button>
+    <button id="close">Close</button>
+  </div>
+
+  <!-- Music (plays on open; requires song.mp3 in same folder) -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
